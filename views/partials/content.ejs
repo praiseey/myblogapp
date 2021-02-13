@@ -90,10 +90,13 @@
             <!--ADD COMMENT-->
             <h1>ADD COMMENT </h1>
             <form action="/blog/comment/create" method="post">
-                Comment Body:<br>
-                <input type="text" name="comment_body" value="Comment Body">
+                Comment Title:<br>
+                <input type="text" name="comment_title" placeholder="Comment Title">
                 <br><br>
-                <input type="hidden" name="post_id" value="<%= post.id %>">
+                Comment Body:<br>
+                <input type="text" name="comment_body" placeholder="Comment Body">
+                <br><br>
+                <input type="hidden" name="post_id" placeholder="<%= post.id %>">
                 <input type="submit" value="Create Comment">
             </form>
         </div>
@@ -118,12 +121,7 @@
         </div>
     </div>
 <% } else { %>
-    <div class="col-sm-8">    
-        <div class="jumbotron">
-            <h1><%= title %></h1>
-            <p>The main content of the page goes here</p>
-        </div>
-    </div>
+    
 <% } %>
 <!--POST VIEW END HERE-->
 
@@ -156,7 +154,29 @@
 <% } else if (title == 'Delete Author') { %>
      
 <% } else if (title == 'Update Author') { %>
-   
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            <h3>Edit Author</h3>
+            <form action="/blog/author/<%= author.id %>/update" method="post">
+              First Name:<br>
+              <input type="text" name="first_name" value="<%= author.first_name %>">
+              <br><br>
+              Last Name:<br>
+              <input type="text" name="last_name" value="<%= author.last_name %>">
+              <br><br>
+              Email:<br>
+              <input type="text" name="email" value="<%= author.email %>">
+              <br><br>
+              Role:<br>
+              <input type="text" name="role" value="<%= author.role %>">
+              <br><br>
+              Username:<br>
+              <input type="text" name="username" value="<%= author.username %>">
+              <br><br>              
+              <input type="submit" value="Update">
+            </form>
+        </div>
+    </div>
 <% } else if (title == 'Author Details') { %>
     <div class="col-sm-8">    
         <div class="">
@@ -168,6 +188,7 @@
              <p>Role:  <%= author.role %></p>
              <p>Username:  <%= author.username %></p>
              <a href="/blog/author/<%= author.id %>/update">Edit  Author</a> | <a href="/blog/author/<%= author.id %>/delete">Delete Author</a>
+             <br><br>
 
         <% if (author.Posts.length == 0) { %>
             <h3>This author has no posts yet.</h3>
@@ -189,9 +210,9 @@
             </div>
         <% } %>
         </div>
-        <h3>Create new post for this author: 
+        <h4>Create new post for this author: 
             <a href="/blog/post/create">Create Post</a>
-        </h3>
+        </h4>
     </div>
 <% } else if (title == 'Author List') { %>
     <div class="col-sm-8">    
@@ -207,6 +228,8 @@
         <% }); %>
         </ol>
     </div>
+    <h4>Create new author: 
+        <a href="/blog/author/create">Create Author</a>
     </div>
 <% } else { %>
   
@@ -221,44 +244,69 @@
     <div class="col-sm-8">    
         <div class="jumbotron">
             <form action="/blog/comment/create" method="post">
+                Comment Title:<br>
+                <input type="text" name="comment_title" placeholder="Comment Title">
+                <br><br>
                 Comment Body:<br>
-                <input type="text" name="comment_body" value="Comment Body">
+                <input type="text" name="comment_body" placeholder="Comment Body">
                 <br><br>
                 <input type="hidden" name="post_id" value="<%= post.id %>">
-                <input type="submit" value="Create Comment">
+                <input type="submit" placeholder="Create Comment">
             </form>
         </div>
     </div>
 <% } else if (title == 'Delete Comment') { %>
         
 <% } else if (title == 'Update Comment') { %>
-    
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            <form action="/blog/comment/<%= comment.id %>/update" method="post">
+              Comment Title:<br>
+              <input type="text" name="comment_title" value="<%= comment.comment_title %>">
+              <br><br>
+              Comment Body:<br>
+              <input type="text" name="comment_body" value="<%= comment.comment_body %>">
+              <br><br>
+              <input type="submit" value="Update">
+            </form>
+        </div>
+    </div>
 <% } else if (title == 'Comment Details') { %>
     <div class="col-sm-8">    
         <div class="">
              <h1>Details of a Single comment</h1>
              <p>I am a comment for this ID = <%= comment.id %></p>
-             <p>Comment: <%= comment.comment_body %></p>
+             <p>Comment Title: <%= comment.comment_title %></p>
              <a href="/blog/comment/<%= comment.id %>/update">Edit  Comment</a> | <a href="/blog/comment/<%= comment.id %>/delete">Delete Comment</a>
         </div>
     </div>
 <% } else if (title == 'Comment List') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">     
         <div class="">
-        <ol>
-        <% comments.forEach(function(comment) { %>
-                <li>
-                    <h4><a href="/blog/comment/<%= comment.id %>"><%= comment.comment_body %></a></h4>
-                    <p>The main body of the comment <%= comment.comment_body %></p>
-                     <a href="/blog/comment/<%= comment.id %>/update">Edit  Comment</a> | <a href="/blog/comment/<%= comment.id %>/delete">Delete Comment</a>
-                </li>
-            <br/>
-        <% }); %>
-        </ol>
-    </div>
+            <ol>
+                <% comments.forEach(function(comment) { %>
+                    <% if(comment.length == 0) { %>
+                        <h2>No comments yet. </h2>
+                    <% } else { %>
+                        <h2>All Comments: </h2>
+                        <li>
+                            <h4><a href="/blog/comment/<%= comment.id %>"><%= comment.comment_title %></a></h4>
+                            <p>The main body of the comment: <%= comment.comment_body %></p>
+                            <a href="/blog/comment/<%= comment.id %>/update">Edit  Comment</a> | <a href="/blog/comment/<%= comment.id %>/delete">Delete Comment</a>
+                        </li>
+                    <br/>
+                    <% } %>
+                <% }); %>
+            </ol>
+        </div>
     </div>
 <% } else { %>
-    
+    <!-- <div class="col-sm-8">    
+        <div class="jumbotron">
+            <h1><%= title %></h1>
+            <p>The main content of the page goes here</p>
+        </div>
+    </div> -->
 <% } %>
 <!--COMMENT VIEW END HERE-->
 
@@ -281,7 +329,16 @@
 <% } else if (title == 'Delete Category') { %>
         
 <% } else if (title == 'Update Category') { %>
-    
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            <form action="/blog/category/<%= category.id %>/update" method="post">
+                Category Name:<br>
+              <input type="text" name="name" value="<%= category.name %>">
+              <br><br>
+              <input type="submit" value="Update Category">
+            </form>
+        </div>
+    </div>
 <% } else if (title == 'Category Details') { %>
     <div class="col-sm-8">    
         <div class="">
@@ -289,11 +346,12 @@
              <p>I am a category for this ID = <%= category.id %></p>
              <p>Category Name: <%= category.name %></p>
              <a href="/blog/category/<%= category.id %>/update">Edit  Category</a> | <a href="/blog/category/<%= category.id %>/delete">Delete Category</a>
+             <br><br>
         </div>
         <% if (category.posts.length == 0) { %>
             <h3>This category has no posts yet!</h3>
         <% } else { %>
-            <h3>Posts in this category</h3>
+            <h4>Posts in this category</h4>
             <div class="">
                 <ol>
                     <% category.posts.forEach(function(post) { %>
@@ -314,7 +372,7 @@
         <% categories.forEach(function(category) { %>
                 <li>
                     <h4><a href="/blog/category/<%= category.id %>"><%= category.name %></a></h4>
-                    <p>The main body of the category <%= category.name %></p>
+                    <p>The main body of the category: <%= category.name %></p>
                      <a href="/blog/category/<%= category.id %>/update">Edit  Category</a> | <a href="/blog/category/<%= category.id %>/delete">Delete Category</a>
                 </li>
             <br/>
@@ -330,10 +388,3 @@
     
 <% } %>
 <!--CATEGORY VIEW END HERE-->
-
-
-<!--do this for all the routes-->
-<!--This is how you will dynamically change the content on the main page-->
-<!--we already know that left and right side bar are mostly constant-->
-
-

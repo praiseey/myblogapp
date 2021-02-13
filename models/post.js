@@ -4,8 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     
     post_title: DataTypes.STRING,
     post_body: DataTypes.STRING,
-    AuthorId: DataTypes.INTEGER,
-    
+    AuthorId: DataTypes.INTEGER
   });
 
   Post.associate = function(models) {
@@ -19,9 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     models.Post.belongsToMany(models.Category, {
       as: 'categories',
       through: 'postCategories',
-      foreignKey: {
-        name: 'post_id'
-      }
+      foreignKey: 'post_id'
     });
 
     models.Post.hasMany(models.Comment);
